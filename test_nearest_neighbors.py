@@ -10,6 +10,7 @@ class Capturing(list):
         self._stdout = sys.stdout
         sys.stdout = self._stringio = StringIO()
         return self
+
     def __exit__(self, *args):
         self.extend(self._stringio.getvalue().splitlines())
         del self._stringio
@@ -20,9 +21,9 @@ class TestStringMethods(unittest.TestCase):
     def base_test(self, inputfile, outputfile):
         with Capturing() as output:
             nearest_neighbors(inputfile)
-        f = open(outputfile, 'r')
+        opened_file = open(outputfile, 'r')
         i = 0
-        for line in f:
+        for line in opened_file:
             self.assertEqual(line.strip(), output[i])
             i = i+1
 
