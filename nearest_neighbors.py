@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 import sys
+import math
 import time
 import numpy
+
 from sklearn.neighbors import NearestNeighbors
 
 
@@ -18,12 +20,23 @@ class InputData(object):
         nbrs = NearestNeighbors(n_neighbors=2, algorithm='auto').fit(self.array)
         (distances, indices) = nbrs.kneighbors(self.array)
         self.solution = indices[numpy.argmin(numpy.delete(distances, 0, 1))]
+        self.my_brute(self.array)
 
     def log_solution(self):
         print "%d:%s" % (self.solution[0]+1,
                          '\t'.join(map(str,[int(round(flt)) for flt in self.array[self.solution[0]]])))
         print "%d:%s" % (self.solution[1]+1,
                          '\t'.join(map(str,[int(round(flt)) for flt in self.array[self.solution[1]]])))
+
+    def my_brute(self, array):
+        min_distance = sys.maxint
+        for i in range(len(array)):
+            for j in range(i+1,len(array)):
+                dist = numpy.sqrt(numpy.sum((array[i] - array[j])**2))
+                if min_distance > dist:
+                    min_distance = dist
+                    self.solution = (i,j)
+
 
 def nearest_neighbors(inputfile):
 
@@ -40,5 +53,5 @@ if __name__ == '__main__':
         print "Elapsed time : %.3f seconds" % elapsed
     except IndexError:
         print "No param was given to the script - example usage: " \
-            "./nearest_neighbors.py PATH_TO_TESTDATA"
+              "./nearest_neighbors.py PATH_TO_TESTDATA"
         sys.exit(1)
