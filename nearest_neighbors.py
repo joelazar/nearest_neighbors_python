@@ -17,9 +17,9 @@ class InputData(object):
             sys.exit(1)
 
     def find_nearest_neighbors(self):
-        nbrs = NearestNeighbors(n_neighbors=2, algorithm='auto').fit(self.array)
-        (distances, indices) = nbrs.kneighbors(self.array)
-        self.solution = indices[numpy.argmin(numpy.delete(distances, 0, 1))]
+#       nbrs = NearestNeighbors(n_neighbors=2, algorithm='auto').fit(self.array)
+#       (distances, indices) = nbrs.kneighbors(self.array)
+#       self.solution = indices[numpy.argmin(numpy.delete(distances, 0, 1))]
         self.my_brute(self.array)
 
     def log_solution(self):
